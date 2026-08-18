@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>芦花家</title>
+    <style>
+        :root {
+            --bg: #f9f7f4;
+            --card-bg: #ffffff;
+            --text-primary: #2c2c2c;
+            --text-secondary: #6b6b6b;
+            --accent: #c75b39;
+            --accent-hover: #a8472b;
+            --border: #e5e0d8;
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.1);
+            --radius: 16px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'PingFang SC', 'Hiragino Sans', 'Microsoft YaHei', 'Noto Sans SC', 'Noto Sans JP', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 背景装饰 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(199, 91, 57, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 80%, rgba(199, 91, 57, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.6) 0%, transparent 70%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* 主容器 */
+        .main-wrapper {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 560px;
+        }
+
+        /* 卡片 */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 48px 40px 40px;
+            width: 100%;
+            text-align: center;
+            transition: box-shadow var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* 主标题 */
+        .main-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 0.02em;
+            line-height: 1.3;
+            margin-bottom: 8px;
+            font-family: 'Segoe UI', 'PingFang SC', 'Hiragino Sans', sans-serif;
+        }
+
+        .main-title .highlight {
+            color: var(--accent);
+            position: relative;
+            white-space: nowrap;
+        }
+
+        .main-title .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: rgba(199, 91, 57, 0.15);
+            border-radius: 3px;
+            z-index: -1;
+        }
+
+        /* 副标题装饰线 */
+        .divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0 32px;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            max-width: 80px;
+            height: 1.5px;
+            background: linear-gradient(90deg, transparent, var(--border));
+            border-radius: 1px;
+        }
+        .divider::after {
+            background: linear-gradient(90deg, var(--border), transparent);
+        }
+        .divider-icon {
+            color: var(--accent);
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            opacity: 0.7;
+            user-select: none;
+        }
+
+        /* 按钮容器 */
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            padding: 18px 24px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: #fefdfc;
+            color: var(--text-primary);
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all var(--transition);
+            letter-spacing: 0.02em;
+            line-height: 1.4;
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn:hover,
+        .btn:focus-visible {
+            border-color: var(--accent);
+            background: #fffaf7;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(199, 91, 57, 0.12);
+            outline: none;
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(199, 91, 57, 0.1);
+            transition: all 0.1s ease;
+        }
+
+        .btn .btn-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+            transition: transform var(--transition);
+        }
+        .btn:hover .btn-icon {
+            transform: scale(1.15);
+        }
+
+        .btn .btn-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+        }
+        .btn .btn-text .primary-text {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+        .btn .btn-text .secondary-text {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            letter-spacing: 0.03em;
+            line-height: 1.3;
+        }
+
+        .btn .btn-arrow {
+            margin-left: auto;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            transition: all var(--transition);
+            flex-shrink: 0;
+        }
+        .btn:hover .btn-arrow {
+            color: var(--accent);
+            transform: translateX(4px);
+        }
+
+        /* 特定按钮微调 */
+        .btn-cn .btn-icon {
+            color: #c0392b;
+        }
+        .btn-jp .btn-icon {
+            color: #2c3e50;
+        }
+
+        /* 底部英文提示（现在作为链接） */
+        .footer-note {
+            display: block;                /* 关键：让链接占满整行，保留原有布局 */
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.04em;
+            line-height: 1.6;
+            border-top: 1px dashed var(--border);
+            padding-top: 20px;
+            margin-top: 4px;
+            font-style: italic;
+            text-decoration: none;       /* 去除默认下划线 */
+            transition: color var(--transition);
+        }
+
+        .footer-note:hover {
+            color: var(--accent);
+            text-decoration: underline;   /* 悬停时显示下划线，增强可点击性 */
+        }
+
+        .footer-note .domain {
+            font-weight: 600;
+            font-style: normal;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        /* 页脚 */
+        .page-footer {
+            margin-top: 24px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            z-index: 1;
+            position: relative;
+        }
+        .page-footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color var(--transition);
+            letter-spacing: 0.03em;
+        }
+        .page-footer a:hover {
+            color: var(--accent);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 480px) {
+            .card {
+                padding: 32px 20px 28px;
+                border-radius: 14px;
+            }
+            .main-title {
+                font-size: 1.8rem;
+            }
+            .btn {
+                padding: 16px 18px;
+                font-size: 0.95rem;
+                border-radius: 10px;
+            }
+            .btn .btn-text .primary-text {
+                font-size: 0.95rem;
+            }
+            .btn .btn-text .secondary-text {
+                font-size: 0.72rem;
+            }
+            .footer-note {
+                font-size: 0.8rem;
+            }
+            .divider {
+                margin: 16px 0 24px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .main-title {
+                font-size: 1.5rem;
+            }
+            .btn {
+                padding: 14px 14px;
+                gap: 8px;
+            }
+            .btn .btn-icon {
+                font-size: 1.2rem;
+            }
+            .btn .btn-arrow {
+                font-size: 1rem;
+            }
+        }
+
+        /* 暗色模式适配 */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #1a1a1a;
+                --card-bg: #242424;
+                --text-primary: #ececec;
+                --text-secondary: #a8a8a8;
+                --accent: #e07a53;
+                --accent-hover: #f08a63;
+                --border: #3a3a3a;
+                --shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+                --shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.4);
+            }
+            .btn {
+                background: #2a2a2a;
+            }
+            .btn:hover,
+            .btn:focus-visible {
+                background: #2f2a28;
+            }
+            .btn .btn-text .primary-text {
+                color: var(--text-primary);
+            }
+            .btn .btn-text .secondary-text {
+                color: var(--text-secondary);
+            }
+            .footer-note {
+                border-top-color: #3a3a3a;
+            }
+            .btn-cn .btn-icon {
+                color: #e74c3c;
+            }
+            .btn-jp .btn-icon {
+                color: #5d7fa3;
+            }
+            body::before {
+                background:
+                    radial-gradient(ellipse at 30% 20%, rgba(224, 122, 83, 0.08) 0%, transparent 50%),
+                    radial-gradient(ellipse at 70% 80%, rgba(224, 122, 83, 0.05) 0%, transparent 50%),
+                    radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-wrapper">
+        <!-- 主卡片 -->
+        <main class="card">
+            <!-- 英文主标题 -->
+            <h1 class="main-title">
+                Welcome to <span class="highlight">roka.ink</span>
+            </h1>
+
+            <!-- 装饰分隔线 -->
+            <div class="divider">
+                <span class="divider-icon">✦ ✦ ✦</span>
+            </div>
+
+            <!-- 按钮选项 -->
+            <div class="button-group">
+                <!-- 中文站按钮 -->
+                <a href="https://cn.roka.ink" class="btn btn-cn" target="_blank" rel="noopener noreferrer">
+                    <span class="btn-icon">🇨🇳</span>
+                    <span class="btn-text">
+                        <span class="primary-text">前往 芦花家 - 中文站</span>
+                        <span class="secondary-text">cn.roka.ink</span>
+                    </span>
+                    <span class="btn-arrow">→</span>
+                </a>
+
+                <!-- 日文站按钮 -->
+                <a href="https://jp.roka.ink" class="btn btn-jp" target="_blank" rel="noopener noreferrer">
+                    <span class="btn-icon">🇯🇵</span>
+                    <span class="btn-text">
+                        <span class="primary-text">前往 芦花の部屋 - 日本語站</span>
+                        <span class="secondary-text">jp.roka.ink</span>
+                    </span>
+                    <span class="btn-arrow">→</span>
+                </a>
+            </div>
+
+            <!-- 底部英文提示（已改为链接，点击跳转 more.html） -->
+            <a href="more.html" class="footer-note">
+                Visit more <span class="domain">roka.ink</span> root domain sites ✦
+            </a>
+        </main>
+
+        <!-- 页脚备案 -->
+        <footer class="page-footer">
+            <a href="https://icp.gov.moe/?keyword=20265009" target="_blank" rel="noopener noreferrer">
+                萌ICP备20265009号
+            </a>
+        </footer>
+    </div>
+
+</body>
+</html>
